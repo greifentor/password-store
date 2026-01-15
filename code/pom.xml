@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.ollie</groupId>
+		<artifactId>password-store</artifactId>
+		<version>0.0.1</version>
+	</parent>
+
+	<artifactId>password-store-code</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Password Store (Code)</name>
+	<description>The code building sub module.</description>
+
+	<properties>
+		<plugin.prettier.goal>write</plugin.prettier.goal>
+	</properties>
+
+	<modules>
+		<module>base-lib</module>
+		<module>service</module>
+		<module>service-interfaces</module>
+	</modules>
+
+</project>
