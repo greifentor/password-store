@@ -21,17 +21,17 @@
 	</properties>
 
 	<dependencies>
-		<!-- bptracker-->
+		<!-- password-store -->
 		<dependency>
 			<groupId>de.ollie</groupId>
 			<artifactId>password-store-base-lib</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<!-- dependency>
+		<dependency>
 			<groupId>de.ollie</groupId>
-			<artifactId>ucg-service-interface</artifactId>
-			<version>0.3.0</version>
-		</dependency -->
+			<artifactId>password-store-service-interfaces</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>

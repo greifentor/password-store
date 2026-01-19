@@ -10,11 +10,11 @@
 		<version>0.0.1</version>
 	</parent>
 
-	<artifactId>password-store-service-interfaces</artifactId>
+	<artifactId>password-store-gui-swing</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Password Store (Service Interfaces)</name>
-	<description>The interfaces of the services of the application.</description>
+	<name>Password Store (GUI Swing)</name>
+	<description>The implementation of the Swing GUI module of the application.</description>
 
 	<properties>
 		<plugin.prettier.goal>write</plugin.prettier.goal>
@@ -24,8 +24,14 @@
 		<!-- password-store -->
 		<dependency>
 			<groupId>de.ollie</groupId>
-			<artifactId>password-store-base-lib</artifactId>
+			<artifactId>password-store-service-interfaces</artifactId>
 			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>de.ollie</groupId>
+			<artifactId>password-store-service</artifactId>
+			<version>0.0.1</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Spring -->
 		<dependency>

@@ -22,6 +22,7 @@
 
 	<modules>
 		<module>base-lib</module>
+		<module>gui-swing</module>
 		<module>service</module>
 		<module>service-interfaces</module>
 	</modules>
