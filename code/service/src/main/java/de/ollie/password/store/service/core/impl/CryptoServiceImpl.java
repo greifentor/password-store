@@ -1,6 +1,6 @@
-package de.ollie.password.store.service.impl;
+package de.ollie.password.store.service.core.impl;
 
-import de.ollie.password.store.service.CryptoService;
+import de.ollie.password.store.service.core.CryptoService;
 import jakarta.inject.Named;
 
 @Named

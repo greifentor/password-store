@@ -1,7 +1,8 @@
-package de.ollie.password.store.service.impl;
+package de.ollie.password.store.service.core.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import de.ollie.password.store.service.core.impl.CryptoServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

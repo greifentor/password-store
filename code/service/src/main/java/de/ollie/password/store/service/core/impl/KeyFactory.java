@@ -1,4 +1,4 @@
-package de.ollie.password.store.service.impl;
+package de.ollie.password.store.service.core.impl;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

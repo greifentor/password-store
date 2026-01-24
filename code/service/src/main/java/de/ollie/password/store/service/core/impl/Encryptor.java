@@ -1,4 +1,4 @@
-package de.ollie.password.store.service.impl;
+package de.ollie.password.store.service.core.impl;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;

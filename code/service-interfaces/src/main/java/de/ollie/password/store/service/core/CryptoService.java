@@ -1,4 +1,4 @@
-package de.ollie.password.store.service;
+package de.ollie.password.store.service.core;
 
 public interface CryptoService {
 	String encrypt(String plaintext, String password) throws Exception;
