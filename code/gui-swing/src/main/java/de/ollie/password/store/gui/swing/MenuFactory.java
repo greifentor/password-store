@@ -4,6 +4,7 @@ import jakarta.inject.Named;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 
 @Named
 class MenuFactory {
@@ -14,6 +15,7 @@ class MenuFactory {
 
 	enum Identifier {
 		QUIT,
+		SAVE,
 	}
 
 	JMenuBar create(Observer observer) {
@@ -24,6 +26,8 @@ class MenuFactory {
 
 	JMenu createFileMenu(Observer observer) {
 		JMenu menu = new JMenu("File");
+		menu.add(createMenuItemSave(observer));
+		menu.add(new JSeparator());
 		menu.add(createMenuItemQuit(observer));
 		return menu;
 	}
@@ -31,6 +35,12 @@ class MenuFactory {
 	JMenuItem createMenuItemQuit(Observer observer) {
 		JMenuItem menuItem = new JMenuItem("Quit");
 		menuItem.addActionListener(e -> menuItemSelected(observer, Identifier.QUIT));
+		return menuItem;
+	}
+
+	JMenuItem createMenuItemSave(Observer observer) {
+		JMenuItem menuItem = new JMenuItem("Save");
+		menuItem.addActionListener(e -> menuItemSelected(observer, Identifier.SAVE));
 		return menuItem;
 	}
 
