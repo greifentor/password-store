@@ -4,7 +4,6 @@ import de.ollie.password.store.gui.swing.MenuFactory.Identifier;
 import de.ollie.password.store.gui.swing.MenuFactory.Observer;
 import jakarta.inject.Named;
 import java.awt.BorderLayout;
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,8 +20,6 @@ class PasswordStoreMainFrame extends JFrame implements Observer {
 
 	private final ApplicationConfiguration configuration;
 	private final MenuFactory menuFactory;
-
-	private JDesktopPane desktopPane = new JDesktopPane();
 
 	public void showFrame() {
 		try {

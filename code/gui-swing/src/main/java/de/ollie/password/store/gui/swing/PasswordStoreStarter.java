@@ -16,7 +16,7 @@ public class PasswordStoreStarter {
 
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(PasswordStoreStarter.class);
-		app.setHeadless(false); // GUI erlauben
+		app.setHeadless(false);
 		ConfigurableApplicationContext context = app.run(args);
 		PasswordStoreMainFrame mainFrame = context.getBean(PasswordStoreMainFrame.class);
 		SwingUtilities.invokeLater(mainFrame::showFrame);
