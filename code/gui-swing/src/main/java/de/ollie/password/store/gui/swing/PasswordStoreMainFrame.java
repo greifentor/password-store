@@ -1,11 +1,14 @@
 package de.ollie.password.store.gui.swing;
 
+import static de.ollie.password.store.gui.swing.Constants.HGAP;
+import static de.ollie.password.store.gui.swing.Constants.VGAP;
+
 import de.ollie.password.store.gui.swing.MenuFactory.Identifier;
 import de.ollie.password.store.gui.swing.MenuFactory.Observer;
+import de.ollie.password.store.service.core.PasswordService;
 import jakarta.inject.Named;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -15,10 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 class PasswordStoreMainFrame extends JFrame implements Observer {
 
-	private static final int HGAP = 3;
-	private static final int VGAP = 3;
-
 	private final ApplicationConfiguration configuration;
+	private final PasswordService passwordService;
 	private final MenuFactory menuFactory;
 
 	public void showFrame() {
@@ -37,7 +38,7 @@ class PasswordStoreMainFrame extends JFrame implements Observer {
 
 	private JPanel createMainPanel() {
 		JPanel panel = new JPanel(new BorderLayout(HGAP, VGAP));
-		panel.add(new JLabel(";ob"));
+		panel.add(new PasswordListPanel(passwordService), BorderLayout.CENTER);
 		return panel;
 	}
 
