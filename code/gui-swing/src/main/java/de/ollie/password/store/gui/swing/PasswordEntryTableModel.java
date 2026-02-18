@@ -4,15 +4,13 @@ import static de.ollie.baselib.util.Check.ensure;
 
 import de.ollie.password.store.service.code.model.PasswordEntry;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 class PasswordEntryTableModel extends AbstractTableModel {
 
-	static final String BUTTON = "button";
-	static final int COLUMN_COUNT = 2;
+	static final int COLUMN_COUNT = 1;
 
 	private static final String[] COLUMN_NAME = { "Account", "" };
 
@@ -21,10 +19,7 @@ class PasswordEntryTableModel extends AbstractTableModel {
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
 		ensureValidColumnIndex(columnIndex);
-		if (columnIndex == 0) {
-			return String.class;
-		}
-		return JButton.class;
+		return String.class;
 	}
 
 	private void ensureValidColumnIndex(int columnIndex) {
@@ -33,7 +28,7 @@ class PasswordEntryTableModel extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 2;
+		return COLUMN_COUNT;
 	}
 
 	@Override
@@ -52,10 +47,7 @@ class PasswordEntryTableModel extends AbstractTableModel {
 		ensureValidColumnIndex(columnIndex);
 		ensureValidRowIndex(rowIndex);
 		PasswordEntry pe = passwordEntries.get(rowIndex);
-		if (columnIndex == 0) {
-			return pe.getLabel();
-		}
-		return BUTTON;
+		return pe.getLabel();
 	}
 
 	private void ensureValidRowIndex(int rowIndex) {

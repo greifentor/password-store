@@ -4,12 +4,10 @@ import static de.ollie.password.store.gui.swing.PasswordEntryTableModel.COLUMN_C
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import de.ollie.password.store.service.code.model.PasswordEntry;
 import java.util.List;
-import javax.swing.JButton;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,19 +44,14 @@ class PasswordEntryTableModelTest {
 		void returnsTheCorrectColumnClass_forColumn0() {
 			assertEquals(String.class, unitUnderTest.getColumnClass(0));
 		}
-
-		@Test
-		void returnsTheCorrectColumnClass_forColumn1() {
-			assertEquals(JButton.class, unitUnderTest.getColumnClass(1));
-		}
 	}
 
 	@Nested
 	class getColumnCount {
 
 		@Test
-		void returns2() {
-			assertEquals(2, unitUnderTest.getColumnCount());
+		void returns1() {
+			assertEquals(1, unitUnderTest.getColumnCount());
 		}
 	}
 
@@ -76,7 +69,7 @@ class PasswordEntryTableModelTest {
 		}
 
 		@ParameterizedTest
-		@CsvSource({ "0,Account", "1,''" })
+		@CsvSource({ "0,Account" })
 		void returnsTheCorrectColumnName_passingAValidColumn(int columnIndex, String expectedColumnName) {
 			assertEquals(expectedColumnName, unitUnderTest.getColumnName(columnIndex));
 		}
@@ -135,15 +128,6 @@ class PasswordEntryTableModelTest {
 			// Run & Check
 			assertEquals(expectedLabel, unitUnderTest.getValueAt(0, 0));
 		}
-
-		@Test
-		void returnsTheButtonString_passing1_asColumn() {
-			// Prepare
-			when(passwordEntries.size()).thenReturn(1);
-			when(passwordEntries.get(0)).thenReturn(passwordEntry);
-			// Run & Check
-			assertEquals(PasswordEntryTableModel.BUTTON, unitUnderTest.getValueAt(0, 1));
-		}
 	}
 
 	@Nested
@@ -180,15 +164,6 @@ class PasswordEntryTableModelTest {
 			when(passwordEntries.size()).thenReturn(size);
 			// Run & Check
 			assertFalse(unitUnderTest.isCellEditable(row, 0));
-		}
-
-		@ParameterizedTest
-		@ValueSource(ints = { 0, 1, 2, 3, 4, 5, 20, 21, 22, 38, 39, 40, 41 })
-		void returnsTrue_forColumn1(int row) { // Prepare
-			int size = 42;
-			when(passwordEntries.size()).thenReturn(size);
-			// Run & Check
-			assertTrue(unitUnderTest.isCellEditable(row, 1));
 		}
 	}
 }

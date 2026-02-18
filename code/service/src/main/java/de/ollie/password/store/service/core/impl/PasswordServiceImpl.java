@@ -11,6 +11,13 @@ class PasswordServiceImpl implements PasswordService {
 	@Override
 	public List<PasswordEntry> findAllEntries() {
 		// TODO Auto-generated method stub
-		return List.of(new PasswordEntry().setLabel("Account0"), new PasswordEntry().setLabel("Account1"));
+		return List.of(
+			new PasswordEntry()
+				.setLabel("Account0")
+				.setPassword("oXFcOPCT6NzJb/QLXLuf3F2B6RNGzoGa/wz8GvfLrzFZCb8tqW74HXRTs6z3vsxhAzg71Us="),
+			new PasswordEntry()
+				.setLabel("Account1")
+				.setPassword("cwzGh5rRDhW3GCil+N18HByKpsaGswqtsOl0tO5/qgcYyEhoGracGmyIc+X2c5U379c9YOU=")
+		);
 	}
 }
