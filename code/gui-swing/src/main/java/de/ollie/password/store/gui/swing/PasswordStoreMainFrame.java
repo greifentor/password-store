@@ -61,7 +61,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 
 	@Override
 	public void changeRequested(PasswordEntry passwordEntry) {
-		System.out.println("GOTCHA!");
+		new PasswordEntryDialog(passwordEntry, cryptoService, password, this);
 	}
 
 	@Override

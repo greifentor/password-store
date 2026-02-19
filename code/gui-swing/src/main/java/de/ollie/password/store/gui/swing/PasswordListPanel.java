@@ -54,14 +54,18 @@ class PasswordListPanel extends JPanel implements MouseListener {
 	}
 
 	private boolean isPasswordEntrySelected() {
-		return table.getSelectedColumn() > -1;
+		return table.getSelectedRow() > -1;
 	}
 
 	private void fireListActionEventActionSelected() {
 		if (isChangeObserverDefined()) {
-			PasswordEntry pe = passwordService.findAllEntries().get(table.getSelectedColumn());
+			PasswordEntry pe = getSelectedPasswordEntry();
 			changeObserver.rightMouseActionDetected(pe);
 		}
+	}
+
+	private PasswordEntry getSelectedPasswordEntry() {
+		return passwordService.findAllEntries().get(table.getSelectedRow());
 	}
 
 	private boolean isChangeObserverDefined() {
@@ -82,7 +86,7 @@ class PasswordListPanel extends JPanel implements MouseListener {
 
 	private void openDialogToChangePasswordEntry() {
 		if (isChangeObserverDefined() && isPasswordEntrySelected()) {
-			PasswordEntry pe = passwordService.findAllEntries().get(table.getSelectedColumn());
+			PasswordEntry pe = getSelectedPasswordEntry();
 			changeObserver.changeRequested(pe);
 		}
 	}

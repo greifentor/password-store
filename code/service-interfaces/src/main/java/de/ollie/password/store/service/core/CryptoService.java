@@ -1,7 +1,9 @@
 package de.ollie.password.store.service.core;
 
-public interface CryptoService {
-	String encrypt(String plaintext, String password) throws Exception;
+import de.ollie.password.store.service.code.exception.CryptoException;
 
-	String decrypt(String ciphertext, String password) throws Exception;
+public interface CryptoService {
+	String encrypt(String plaintext, String password) throws CryptoException;
+
+	String decrypt(String ciphertext, String password) throws CryptoException;
 }
