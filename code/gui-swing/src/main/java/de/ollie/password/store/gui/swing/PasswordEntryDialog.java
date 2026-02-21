@@ -25,57 +25,80 @@ public class PasswordEntryDialog extends JDialog {
 
 	private JTextField labelField;
 	private JPasswordField passwordField;
-	private JButton okButton;
-	private JButton cancelButton;
 
 	public PasswordEntryDialog(PasswordEntry passwordEntry, CryptoService cryptoService, String secret, JFrame parent) {
 		super(parent, "Account");
 		this.cryptoService = cryptoService;
 		this.passwordEntry = passwordEntry;
 		this.secret = secret;
-		createMainPanel(passwordEntry);
+		createMainPanel();
 		pack();
 		setVisible(true);
 		setModal(true);
 	}
 
-	private void createMainPanel(PasswordEntry passwordEntry) {
+	private void createMainPanel() {
 		JPanel mainPanel = new JPanel(new BorderLayout(HGAP, VGAP));
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(HGAP, VGAP, HGAP, VGAP));
-		JPanel labelPanel = new JPanel(new GridLayout(2, 1, HGAP, VGAP));
-		JPanel inputPanel = new JPanel(new GridLayout(2, 1, HGAP, VGAP));
-		JLabel labelLabel = new JLabel("Label:");
-		labelField = new JTextField(40);
-		labelField.setText(passwordEntry.getLabel());
-		JLabel passwordLabel = new JLabel("Password:");
-		passwordField = new JPasswordField(40);
-		passwordField.setText(cryptoService.decrypt(passwordEntry.getPassword(), secret));
-
-		labelPanel.add(labelLabel);
-		labelPanel.add(passwordLabel);
-		inputPanel.add(labelField);
-		inputPanel.add(passwordField);
-
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		okButton = new JButton("Ok");
-		cancelButton = new JButton("Abbruch");
-
-		okButton.addActionListener(e -> saveFieldsToData());
-		cancelButton.addActionListener(e -> dispose());
-
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
-
-		mainPanel.add(labelPanel, BorderLayout.WEST);
-		mainPanel.add(inputPanel, BorderLayout.CENTER);
-		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
+		mainPanel.add(createLabelPanel(), BorderLayout.WEST);
+		mainPanel.add(createInputPanel(), BorderLayout.CENTER);
+		mainPanel.add(createButtonPanel(), BorderLayout.SOUTH);
 		add(mainPanel);
 	}
 
-	private void saveFieldsToData() {
+	private JPanel createInputPanel() {
+		createTextFieldLabel();
+		createTextFieldPassword();
+		JPanel panel = new JPanel(new GridLayout(2, 1, HGAP, VGAP));
+		panel.add(labelField);
+		panel.add(passwordField);
+		return panel;
+	}
+
+	private void createTextFieldLabel() {
+		labelField = new JTextField(40);
+		labelField.setText(passwordEntry.getLabel());
+	}
+
+	private void createTextFieldPassword() {
+		passwordField = new JPasswordField(40);
+		passwordField.setText(
+			passwordEntry.getPassword().isEmpty() ? "" : cryptoService.decrypt(passwordEntry.getPassword(), secret)
+		);
+	}
+
+	private JPanel createLabelPanel() {
+		JPanel panel = new JPanel(new GridLayout(2, 1, HGAP, VGAP));
+		JLabel labelLabel = new JLabel("Label:");
+		JLabel passwordLabel = new JLabel("Password:");
+		panel.add(labelLabel);
+		panel.add(passwordLabel);
+		return panel;
+	}
+
+	private JPanel createButtonPanel() {
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		panel.add(createButtonOk());
+		panel.add(createButtonCancel());
+		return panel;
+	}
+
+	private JButton createButtonOk() {
+		JButton button = new JButton("Ok");
+		button.addActionListener(e -> saveFieldsToObjectAndCloseDialog());
+		return button;
+	}
+
+	private JButton createButtonCancel() {
+		JButton button = new JButton("Abbruch");
+		button.addActionListener(e -> dispose());
+		return button;
+	}
+
+	private void saveFieldsToObjectAndCloseDialog() {
+		String password = new String(passwordField.getPassword());
 		passwordEntry.setLabel(labelField.getText());
-		passwordEntry.setPassword(cryptoService.encrypt(new String(passwordField.getPassword()), secret));
+		passwordEntry.setPassword(password.isEmpty() ? "" : cryptoService.encrypt(password, secret));
 		dispose();
 	}
 }

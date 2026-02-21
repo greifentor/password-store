@@ -55,7 +55,12 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 	@Override
 	public void menuItemSelected(Identifier identifier) {
 		if (identifier == Identifier.QUIT) {
+			passwordService.persistAllEntries();
 			System.exit(0);
+		} else if (identifier == Identifier.NEW) {
+			PasswordEntry passwordEntry = new PasswordEntry().setLabel("").setPassword("");
+			new PasswordEntryDialog(passwordEntry, cryptoService, password, this);
+			passwordService.addNewPasswordEntry(passwordEntry);
 		}
 	}
 
