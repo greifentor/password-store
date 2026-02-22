@@ -19,16 +19,28 @@ import javax.swing.JTextField;
 
 public class PasswordEntryDialog extends JDialog {
 
+	public interface Observer {
+		void okPressedAndDataTransfered();
+	}
+
 	private final CryptoService cryptoService;
+	private final Observer observer;
 	private final PasswordEntry passwordEntry;
 	private final String secret;
 
 	private JTextField labelField;
 	private JPasswordField passwordField;
 
-	public PasswordEntryDialog(PasswordEntry passwordEntry, CryptoService cryptoService, String secret, JFrame parent) {
+	public PasswordEntryDialog(
+		PasswordEntry passwordEntry,
+		CryptoService cryptoService,
+		String secret,
+		JFrame parent,
+		Observer observer
+	) {
 		super(parent, "Account");
 		this.cryptoService = cryptoService;
+		this.observer = observer;
 		this.passwordEntry = passwordEntry;
 		this.secret = secret;
 		createMainPanel();
@@ -89,16 +101,23 @@ public class PasswordEntryDialog extends JDialog {
 		return button;
 	}
 
-	private JButton createButtonCancel() {
-		JButton button = new JButton("Abbruch");
-		button.addActionListener(e -> dispose());
-		return button;
-	}
-
 	private void saveFieldsToObjectAndCloseDialog() {
 		String password = new String(passwordField.getPassword());
 		passwordEntry.setLabel(labelField.getText());
 		passwordEntry.setPassword(password.isEmpty() ? "" : cryptoService.encrypt(password, secret));
+		if (observer != null) {
+			observer.okPressedAndDataTransfered();
+		}
+		dispose();
+	}
+
+	private JButton createButtonCancel() {
+		JButton button = new JButton("Abbruch");
+		button.addActionListener(e -> canceled());
+		return button;
+	}
+
+	private void canceled() {
 		dispose();
 	}
 }

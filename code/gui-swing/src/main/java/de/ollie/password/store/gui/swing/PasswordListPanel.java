@@ -14,10 +14,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-class PasswordListPanel extends JPanel implements MouseListener {
+class PasswordListPanel extends JPanel implements MouseListener, PasswordEntryListPopupMenu.Observer {
 
 	public interface ListActionObserver {
 		void changeRequested(PasswordEntry passwordEntry);
+		void deleteRequested(PasswordEntry passwordEntry);
+		void newEntryRequested();
 		void rightMouseActionDetected(PasswordEntry passwordEntry);
 	}
 
@@ -25,25 +27,28 @@ class PasswordListPanel extends JPanel implements MouseListener {
 	private final PasswordService passwordService;
 
 	private JTable table;
+	private PasswordEntryTableModel passwordEntryTableModel;
 
 	PasswordListPanel(ListActionObserver changeObserver, PasswordService passwordService) {
 		super(new BorderLayout(HGAP, VGAP));
 		this.changeObserver = changeObserver;
 		this.passwordService = passwordService;
 		List<PasswordEntry> passwordEntries = passwordService.findAllEntries();
-		table = new JTable(new PasswordEntryTableModel(passwordEntries));
+		passwordEntryTableModel = new PasswordEntryTableModel(passwordEntries);
+		table = new JTable(passwordEntryTableModel);
 		table.addMouseListener(this);
 		add(new JScrollPane(table), BorderLayout.CENTER);
+	}
+
+	public void updatePasswordEntries() {
+		List<PasswordEntry> passwordEntries = passwordService.findAllEntries();
+		table.setModel(new PasswordEntryTableModel(passwordEntries));
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (isRightButton(e)) {
-			if (isPasswordEntrySelected()) {
-				fireListActionEventActionSelected();
-			} else {
-				showMessageNoAccountSelected();
-			}
+			new PasswordEntryListPopupMenu(this).show(this, e.getX(), e.getY());
 		} else if (isLeftButton(e) && isDoubleClick(e) && isPasswordEntrySelected()) {
 			openDialogToChangePasswordEntry();
 		}
@@ -102,4 +107,30 @@ class PasswordListPanel extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void onNew() {
+		if (isChangeObserverDefined()) {
+			changeObserver.newEntryRequested();
+		}
+	}
+
+	@Override
+	public void onDelete() {
+		if (isPasswordEntrySelected()) {
+			PasswordEntry pe = getSelectedPasswordEntry();
+			changeObserver.deleteRequested(pe);
+		} else {
+			showMessageNoAccountSelected();
+		}
+	}
+
+	@Override
+	public void onCopyToClipboard() {
+		if (isPasswordEntrySelected()) {
+			fireListActionEventActionSelected();
+		} else {
+			showMessageNoAccountSelected();
+		}
+	}
 }

@@ -30,6 +30,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 	private final MenuFactory menuFactory;
 
 	private String password;
+	private PasswordListPanel passwordListPanel;
 
 	public void showFrame() {
 		password = JOptionPane.showInputDialog("Enter your password!");
@@ -48,7 +49,8 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 
 	private JPanel createMainPanel() {
 		JPanel panel = new JPanel(new BorderLayout(HGAP, VGAP));
-		panel.add(new PasswordListPanel(this, passwordService), BorderLayout.CENTER);
+		passwordListPanel = new PasswordListPanel(this, passwordService);
+		panel.add(passwordListPanel, BorderLayout.CENTER);
 		return panel;
 	}
 
@@ -57,16 +59,47 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		if (identifier == Identifier.QUIT) {
 			passwordService.persistAllEntries();
 			System.exit(0);
-		} else if (identifier == Identifier.NEW) {
-			PasswordEntry passwordEntry = new PasswordEntry().setLabel("").setPassword("");
-			new PasswordEntryDialog(passwordEntry, cryptoService, password, this);
-			passwordService.addNewPasswordEntry(passwordEntry);
 		}
 	}
 
 	@Override
 	public void changeRequested(PasswordEntry passwordEntry) {
-		new PasswordEntryDialog(passwordEntry, cryptoService, password, this);
+		new PasswordEntryDialog(passwordEntry, cryptoService, password, this, () -> {});
+	}
+
+	@Override
+	public void deleteRequested(PasswordEntry passwordEntry) {
+		if (
+			JOptionPane.showOptionDialog(
+				this,
+				"Are you sure to delete the selected password entry?",
+				"Delete Password Entry",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				null,
+				null
+			) ==
+			JOptionPane.YES_OPTION
+		) {
+			passwordService.deletePasswordEntry(passwordEntry);
+			passwordListPanel.updatePasswordEntries();
+		}
+	}
+
+	@Override
+	public void newEntryRequested() {
+		PasswordEntry passwordEntry = new PasswordEntry().setLabel("").setPassword("");
+		new PasswordEntryDialog(
+			passwordEntry,
+			cryptoService,
+			password,
+			this,
+			() -> {
+				passwordService.addNewPasswordEntry(passwordEntry);
+				passwordListPanel.updatePasswordEntries();
+			}
+		);
 	}
 
 	@Override

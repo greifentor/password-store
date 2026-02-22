@@ -6,6 +6,8 @@ import java.util.List;
 public interface PasswordService {
 	void addNewPasswordEntry(PasswordEntry passwordEntry);
 
+	void deletePasswordEntry(PasswordEntry passwordEntry);
+
 	List<PasswordEntry> findAllEntries();
 
 	void persistAllEntries();

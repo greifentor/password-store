@@ -14,7 +14,6 @@ class MenuFactory {
 	}
 
 	enum Identifier {
-		NEW,
 		QUIT,
 		SAVE,
 	}
@@ -22,7 +21,6 @@ class MenuFactory {
 	JMenuBar create(MenuObserver observer) {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(createFileMenu(observer));
-		menuBar.add(createPasswordEntriesMenu(observer));
 		return menuBar;
 	}
 
@@ -47,18 +45,6 @@ class MenuFactory {
 	JMenuItem createMenuItemSave(MenuObserver observer) {
 		JMenuItem menuItem = new JMenuItem("Save");
 		menuItem.addActionListener(e -> menuItemSelected(observer, Identifier.SAVE));
-		return menuItem;
-	}
-
-	JMenu createPasswordEntriesMenu(MenuObserver observer) {
-		JMenu menu = new JMenu("Password Entries");
-		menu.add(createMenuItemNew(observer));
-		return menu;
-	}
-
-	JMenuItem createMenuItemNew(MenuObserver observer) {
-		JMenuItem menuItem = new JMenuItem("New");
-		menuItem.addActionListener(e -> menuItemSelected(observer, Identifier.NEW));
 		return menuItem;
 	}
 }

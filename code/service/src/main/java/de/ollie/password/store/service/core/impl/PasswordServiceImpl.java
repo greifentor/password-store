@@ -36,6 +36,12 @@ class PasswordServiceImpl implements PasswordService {
 	}
 
 	@Override
+	public void deletePasswordEntry(PasswordEntry passwordEntry) {
+		ensure(passwordEntry != null, "password entry cannot be null!");
+		passwordEntries.remove(passwordEntry);
+	}
+
+	@Override
 	public List<PasswordEntry> findAllEntries() {
 		return passwordEntries.stream().toList();
 	}
