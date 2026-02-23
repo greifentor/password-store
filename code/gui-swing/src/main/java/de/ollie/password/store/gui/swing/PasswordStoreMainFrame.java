@@ -5,6 +5,7 @@ import static de.ollie.password.store.gui.swing.Constants.VGAP;
 
 import de.ollie.password.store.gui.swing.MenuFactory.Identifier;
 import de.ollie.password.store.gui.swing.MenuFactory.MenuObserver;
+import de.ollie.password.store.gui.swing.PasswordEntryDialog.Observer;
 import de.ollie.password.store.gui.swing.PasswordListPanel.ListActionObserver;
 import de.ollie.password.store.service.code.model.PasswordEntry;
 import de.ollie.password.store.service.core.CryptoService;
@@ -45,6 +46,9 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		setBounds(20, 20, 640, 480);
 		setContentPane(createMainPanel());
 		setJMenuBar(menuFactory.create(this));
+		if (passwordService.findAllEntries().isEmpty()) {
+			newEntryRequested();
+		}
 	}
 
 	private JPanel createMainPanel() {
@@ -64,7 +68,23 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 
 	@Override
 	public void changeRequested(PasswordEntry passwordEntry) {
-		new PasswordEntryDialog(passwordEntry, cryptoService, password, this, () -> {});
+		new PasswordEntryDialog(
+			passwordEntry,
+			cryptoService,
+			password,
+			this,
+			new Observer() {
+				@Override
+				public void okPressedAndDataTransfered() {}
+
+				@Override
+				public void canceled() {
+					if (passwordService.findAllEntries().isEmpty()) {
+						newEntryRequested();
+					}
+				}
+			}
+		);
 	}
 
 	@Override
@@ -84,6 +104,9 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		) {
 			passwordService.deletePasswordEntry(passwordEntry);
 			passwordListPanel.updatePasswordEntries();
+			if (passwordService.findAllEntries().isEmpty()) {
+				newEntryRequested();
+			}
 		}
 	}
 
@@ -95,9 +118,19 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 			cryptoService,
 			password,
 			this,
-			() -> {
-				passwordService.addNewPasswordEntry(passwordEntry);
-				passwordListPanel.updatePasswordEntries();
+			new Observer() {
+				@Override
+				public void canceled() {
+					if (passwordService.findAllEntries().isEmpty()) {
+						newEntryRequested();
+					}
+				}
+
+				@Override
+				public void okPressedAndDataTransfered() {
+					passwordService.addNewPasswordEntry(passwordEntry);
+					passwordListPanel.updatePasswordEntries();
+				}
 			}
 		);
 	}

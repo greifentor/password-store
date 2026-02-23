@@ -7,31 +7,20 @@
 	<parent>
 		<groupId>de.ollie</groupId>
 		<artifactId>password-store-code</artifactId>
-		<version>1.0.1</version>
+		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>password-store-service</artifactId>
+	<artifactId>password-store-base-lib</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Password Store (Service)</name>
-	<description>The implementation of the service and core module of the application.</description>
+	<name>Password Store (Base-Lib)</name>
+	<description>The base library of the application.</description>
 
 	<properties>
 		<plugin.prettier.goal>write</plugin.prettier.goal>
 	</properties>
 
 	<dependencies>
-		<!-- password-store -->
-		<dependency>
-			<groupId>de.ollie</groupId>
-			<artifactId>password-store-base-lib</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>de.ollie</groupId>
-			<artifactId>password-store-service-interfaces</artifactId>
-			<version>1.0.1</version>
-		</dependency>
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -44,6 +33,12 @@
 		<dependency>
 			<groupId>jakarta.annotation</groupId>
 			<artifactId>jakarta.annotation-api</artifactId>
+		</dependency>
+		<!-- Apache -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.10.0</version>
 		</dependency>
 		<!-- Testing -->
 		<dependency>

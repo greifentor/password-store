@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 public class PasswordEntryDialog extends JDialog {
 
 	public interface Observer {
+		void canceled();
 		void okPressedAndDataTransfered();
 	}
 
@@ -118,6 +119,9 @@ public class PasswordEntryDialog extends JDialog {
 	}
 
 	private void canceled() {
+		if (observer != null) {
+			observer.canceled();
+		}
 		dispose();
 	}
 }
