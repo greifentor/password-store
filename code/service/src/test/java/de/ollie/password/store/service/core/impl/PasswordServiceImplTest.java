@@ -39,11 +39,27 @@ class PasswordServiceImplTest {
 	private PasswordServiceImpl unitUnderTest;
 
 	@Nested
-	class findAllEntries {
+	class findAllEntriesOrderedByLabel {
 
 		@Test
-		void returnsAnEmptyList() {
-			assertTrue(unitUnderTest.findAllEntries().isEmpty());
+		void returnsAnEmptyList_whenListIsEmpty() {
+			assertTrue(unitUnderTest.findAllEntriesOrderedByLabel().isEmpty());
+		}
+
+		@Test
+		void returnsAnOrderedList_whenListIsFilled() {
+			// Prepare
+			PasswordEntry passwordEntryA = new PasswordEntry().setLabel("A");
+			PasswordEntry passwordEntryL = new PasswordEntry().setLabel("L");
+			PasswordEntry passwordEntryZ = new PasswordEntry().setLabel("Z");
+			List<PasswordEntry> expected = List.of(passwordEntryA, passwordEntryL, passwordEntryZ);
+			ReflectionTestUtils.setField(
+				unitUnderTest,
+				"passwordEntries",
+				List.of(passwordEntryZ, passwordEntryA, passwordEntryL)
+			);
+			// Run & Check
+			assertEquals(expected, unitUnderTest.findAllEntriesOrderedByLabel());
 		}
 	}
 
@@ -60,7 +76,7 @@ class PasswordServiceImplTest {
 			// Run
 			unitUnderTest.addNewPasswordEntry(passwordEntry);
 			// Check
-			assertSame(passwordEntry, unitUnderTest.findAllEntries().get(0));
+			assertSame(passwordEntry, unitUnderTest.findAllEntriesOrderedByLabel().get(0));
 		}
 	}
 
@@ -102,7 +118,7 @@ class PasswordServiceImplTest {
 			// Run
 			unitUnderTest.postConstruct();
 			// Check
-			assertEquals(List.of(passwordEntry), unitUnderTest.findAllEntries());
+			assertEquals(List.of(passwordEntry), unitUnderTest.findAllEntriesOrderedByLabel());
 		}
 	}
 }

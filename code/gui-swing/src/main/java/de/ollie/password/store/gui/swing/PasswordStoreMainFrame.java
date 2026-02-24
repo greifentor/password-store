@@ -46,7 +46,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		setBounds(20, 20, 640, 480);
 		setContentPane(createMainPanel());
 		setJMenuBar(menuFactory.create(this));
-		if (passwordService.findAllEntries().isEmpty()) {
+		if (passwordService.findAllEntriesOrderedByLabel().isEmpty()) {
 			newEntryRequested();
 		}
 	}
@@ -79,7 +79,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 
 				@Override
 				public void canceled() {
-					if (passwordService.findAllEntries().isEmpty()) {
+					if (passwordService.findAllEntriesOrderedByLabel().isEmpty()) {
 						newEntryRequested();
 					}
 				}
@@ -104,7 +104,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		) {
 			passwordService.deletePasswordEntry(passwordEntry);
 			passwordListPanel.updatePasswordEntries();
-			if (passwordService.findAllEntries().isEmpty()) {
+			if (passwordService.findAllEntriesOrderedByLabel().isEmpty()) {
 				newEntryRequested();
 			}
 		}
@@ -121,7 +121,7 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 			new Observer() {
 				@Override
 				public void canceled() {
-					if (passwordService.findAllEntries().isEmpty()) {
+					if (passwordService.findAllEntriesOrderedByLabel().isEmpty()) {
 						newEntryRequested();
 					}
 				}

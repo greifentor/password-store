@@ -8,7 +8,7 @@ public interface PasswordService {
 
 	void deletePasswordEntry(PasswordEntry passwordEntry);
 
-	List<PasswordEntry> findAllEntries();
+	List<PasswordEntry> findAllEntriesOrderedByLabel();
 
 	void persistAllEntries();
 }
