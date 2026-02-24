@@ -33,7 +33,7 @@ class PasswordListPanel extends JPanel implements MouseListener, PasswordEntryLi
 		super(new BorderLayout(HGAP, VGAP));
 		this.changeObserver = changeObserver;
 		this.passwordService = passwordService;
-		List<PasswordEntry> passwordEntries = passwordService.findAllEntries();
+		List<PasswordEntry> passwordEntries = passwordService.findAllEntriesOrderedByLabel();
 		passwordEntryTableModel = new PasswordEntryTableModel(passwordEntries);
 		table = new JTable(passwordEntryTableModel);
 		table.addMouseListener(this);
@@ -41,7 +41,7 @@ class PasswordListPanel extends JPanel implements MouseListener, PasswordEntryLi
 	}
 
 	public void updatePasswordEntries() {
-		List<PasswordEntry> passwordEntries = passwordService.findAllEntries();
+		List<PasswordEntry> passwordEntries = passwordService.findAllEntriesOrderedByLabel();
 		table.setModel(new PasswordEntryTableModel(passwordEntries));
 	}
 
@@ -70,7 +70,7 @@ class PasswordListPanel extends JPanel implements MouseListener, PasswordEntryLi
 	}
 
 	private PasswordEntry getSelectedPasswordEntry() {
-		return passwordService.findAllEntries().get(table.getSelectedRow());
+		return passwordService.findAllEntriesOrderedByLabel().get(table.getSelectedRow());
 	}
 
 	private boolean isChangeObserverDefined() {

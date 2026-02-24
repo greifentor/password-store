@@ -42,8 +42,8 @@ class PasswordServiceImpl implements PasswordService {
 	}
 
 	@Override
-	public List<PasswordEntry> findAllEntries() {
-		return passwordEntries.stream().toList();
+	public List<PasswordEntry> findAllEntriesOrderedByLabel() {
+		return passwordEntries.stream().sorted((pe0, pe1) -> pe0.getLabel().compareTo(pe1.getLabel())).toList();
 	}
 
 	@Override
