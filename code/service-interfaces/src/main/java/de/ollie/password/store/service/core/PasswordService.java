@@ -1,6 +1,7 @@
 package de.ollie.password.store.service.core;
 
 import de.ollie.password.store.service.code.model.PasswordEntry;
+import de.ollie.password.store.service.code.model.ValidationResult;
 import java.util.List;
 
 public interface PasswordService {
@@ -11,4 +12,6 @@ public interface PasswordService {
 	List<PasswordEntry> findAllEntriesOrderedByLabel();
 
 	void persistAllEntries();
+
+	ValidationResult validatePasswordEntry(PasswordEntry passwordEntry);
 }

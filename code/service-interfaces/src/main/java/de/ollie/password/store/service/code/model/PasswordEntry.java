@@ -1,12 +1,12 @@
 package de.ollie.password.store.service.code.model;
 
 import lombok.Data;
-import lombok.Getter;
+import lombok.Generated;
 import lombok.experimental.Accessors;
 
 @Accessors(chain = true)
 @Data
-@Getter
+@Generated
 public class PasswordEntry {
 
 	private String label;
