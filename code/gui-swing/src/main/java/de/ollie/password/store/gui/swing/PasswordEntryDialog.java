@@ -8,11 +8,14 @@ import de.ollie.password.store.service.core.CryptoService;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -103,13 +106,46 @@ public class PasswordEntryDialog extends JDialog {
 	}
 
 	private void saveFieldsToObjectAndCloseDialog() {
-		String password = new String(passwordField.getPassword());
-		passwordEntry.setLabel(labelField.getText());
-		passwordEntry.setPassword(password.isEmpty() ? "" : cryptoService.encrypt(password, secret));
+		if (!isEntryValid()) {
+			showMessageValidationError();
+			return;
+		}
+		transferData();
 		if (observer != null) {
 			observer.okPressedAndDataTransfered();
 		}
 		dispose();
+	}
+
+	private boolean isEntryValid() {
+		return getValidationErrors().isEmpty();
+	}
+
+	private List<String> getValidationErrors() {
+		List<String> validationErrors = new ArrayList<>();
+		if (labelField.getText().isBlank()) {
+			validationErrors.add("- Label cannot be empty");
+		}
+		if (passwordField.getPassword().length == 0) {
+			validationErrors.add("- Password cannot be empty");
+		}
+		return validationErrors;
+	}
+
+	private void showMessageValidationError() {
+		JOptionPane.showMessageDialog(
+			this,
+			"There are validation errors:\n" +
+			getValidationErrors().stream().reduce((s0, s1) -> s0 + "\n" + s1).orElse("n/a"),
+			"Validation Error",
+			JOptionPane.ERROR_MESSAGE
+		);
+	}
+
+	private void transferData() {
+		String password = new String(passwordField.getPassword());
+		passwordEntry.setLabel(labelField.getText());
+		passwordEntry.setPassword(password.isEmpty() ? "" : cryptoService.encrypt(password, secret));
 	}
 
 	private JButton createButtonCancel() {
