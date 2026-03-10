@@ -3,6 +3,7 @@ package de.ollie.password.store.service.core.impl;
 import static de.ollie.baselib.util.Check.ensure;
 
 import de.ollie.password.store.service.code.model.PasswordEntry;
+import de.ollie.password.store.service.code.model.ValidationResult;
 import de.ollie.password.store.service.core.PasswordService;
 import de.ollie.password.store.service.core.configuration.PasswordServiceConfiguration;
 import de.ollie.password.store.service.core.port.FileSystemPort;
@@ -49,5 +50,11 @@ class PasswordServiceImpl implements PasswordService {
 	@Override
 	public void persistAllEntries() {
 		fileSystemPort.writePasswordEntryList(passwordServiceConfiguration.getPasswordEntryFileName(), passwordEntries);
+	}
+
+	@Override
+	public ValidationResult validatePasswordEntry(PasswordEntry passwordEntry) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
