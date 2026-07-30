@@ -12,8 +12,12 @@ import de.ollie.password.store.service.core.CryptoService;
 import de.ollie.password.store.service.core.PasswordService;
 import jakarta.inject.Named;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,6 +50,15 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		setBounds(20, 20, 640, 480);
 		setContentPane(createMainPanel());
 		setJMenuBar(menuFactory.create(this));
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(
+			new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					quitApplication();
+				}
+			}
+		);
 		if (passwordService.findAllEntriesOrderedByLabel().isEmpty()) {
 			newEntryRequested();
 		}
@@ -55,14 +68,31 @@ class PasswordStoreMainFrame extends JFrame implements ListActionObserver, MenuO
 		JPanel panel = new JPanel(new BorderLayout(HGAP, VGAP));
 		passwordListPanel = new PasswordListPanel(this, passwordService);
 		panel.add(passwordListPanel, BorderLayout.CENTER);
+		panel.add(createButtonPanel(), BorderLayout.SOUTH);
 		return panel;
+	}
+
+	private JPanel createButtonPanel() {
+		JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, HGAP, VGAP));
+		panel.add(createButtonQuit());
+		return panel;
+	}
+
+	private JButton createButtonQuit() {
+		JButton button = new JButton("Quit");
+		button.addActionListener(e -> quitApplication());
+		return button;
+	}
+
+	private void quitApplication() {
+		passwordService.persistAllEntries();
+		System.exit(0);
 	}
 
 	@Override
 	public void menuItemSelected(Identifier identifier) {
 		if (identifier == Identifier.QUIT) {
-			passwordService.persistAllEntries();
-			System.exit(0);
+			quitApplication();
 		}
 	}
 
